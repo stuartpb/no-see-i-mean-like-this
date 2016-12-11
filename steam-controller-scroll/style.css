@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body > * {
+  height: 100vh;
+  width: 100vw;
+}
+
+svg {
+  user-select: none;
+  cursor: pointer;
+}
+
+.major {
+  flex: 1;
+}
+
+.column, .row, .box {
+  display: flex;
+}
+
+.column, .box {
+  flex-flow: column;
+}
+
+.row {
+  flex-flow: row;
+}
+
+.box {
+  align-items: center;
+  justify-content: center;
+}
+
+.reverse {
+  direction: rtl;
+}
+
+.scroller {
+  overflow: scroll;
+  /*I can't get this to not make scrolling tiny*/
+  /*scroll-behavior: smooth;*/
+}
