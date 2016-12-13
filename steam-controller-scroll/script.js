@@ -28,12 +28,20 @@ function eventQueue(callback) {
 }
 
 var cwq = eventQueue(function scrollDown() {
-  scroller.scrollBy(0,100);
-  //scroller.scrollBy({behavior: 'smooth', top:100});
+  if (scroller.scrollBy) {
+    scroller.scrollBy(0,100);
+    //scroller.scrollBy({behavior: 'smooth', top:100});
+  } else {
+    scroller.scrollTop += 100;
+  }
 });
 var ccwq = eventQueue(function scrollUp() {
-  scroller.scrollBy(0,-100);
-  //scroller.scrollBy({behavior: 'smooth', top:-100});
+  if (scroller.scrollBy) {
+    scroller.scrollBy(0,-100);
+    //scroller.scrollBy({behavior: 'smooth', top:-100});
+  } else {
+    scroller.scrollTop -= 100;
+  }
 });
 
 delayRange.addEventListener('input',function(evt) {
