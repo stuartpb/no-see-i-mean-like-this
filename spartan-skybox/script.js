@@ -37,8 +37,7 @@ container.appendChild( renderer.domElement );
 var controls = new THREE.TrackballControls(camera);
 controls.noZoom = true;
 controls.noPan = true;
-//controls.target.set( 0, 0, 0 );
-controls.staticMoving = true;
+controls.rotateSpeed = 2.0;
 controls.dynamicDampingFactor = 0.3;
 
 controls.addEventListener( 'change', render );
