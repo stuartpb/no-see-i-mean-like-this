@@ -59,8 +59,9 @@ scene.add(skybox);
 function render() {
 	skybox.position.setFromMatrixPosition(skyboxDummy.matrixWorld);
 	skybox.rotation.y = camera.rotation.y;
-	skyboxTexture.offset.x = -camera.rotation.y;
-	skyboxTexture.offset.y = camera.rotation.x / 2;
+	var lookVector = camera.getWorldDirection();
+	skyboxTexture.offset.x = lookVector.x;
+	skyboxTexture.offset.y = lookVector.y;
 	renderer.render( scene, camera );
 }
 
