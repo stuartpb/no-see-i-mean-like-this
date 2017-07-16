@@ -10,7 +10,7 @@ materialColor.setRGB( 1.0, 1.0, 1.0 );
 var skyplaneHeight = 125000;
 var skyplaneWidth = 250000;
 var skyboxDistance = 125000;
-var skyboxTexture = new THREE.TextureLoader().load( 'backdrop.png' );
+var skyboxTexture = new THREE.TextureLoader().load( 'backdrop.png', render);
 skyboxTexture.wrapS = THREE.RepeatWrapping;
 var skyboxGeometry = new THREE.PlaneGeometry(skyplaneWidth, skyplaneHeight);
 var skyboxMaterial = new THREE.MeshBasicMaterial( {
@@ -65,7 +65,6 @@ function render() {
 	renderer.render( scene, camera );
 }
 
-
 function animate() {
 	requestAnimationFrame( animate );
 	controls.update();
@@ -79,4 +78,5 @@ window.addEventListener('resize',			function onWindowResize() {
 	render();
 });
 
+render();
 animate();
