@@ -17,16 +17,15 @@ var skyboxMaterial = new THREE.MeshBasicMaterial( {
 	map: skyboxTexture
 });
 
-var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
-skybox.position.z = -skyboxDistance;
-
 var container = document.getElementById( 'container' );
 
 var frustumFarDistance = 150000;
 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, frustumFarDistance);
 camera.position.set( -600, 550, 1300 );
 camera.target = new THREE.Vector3( 0, 0, 0 );
-camera.add(skybox);
+var skyboxDummy = new THREE.Object3D();
+skyboxDummy.position.z = -skyboxDistance;
+camera.add(skyboxDummy);
 scene = new THREE.Scene();
 
 renderer = new THREE.WebGLRenderer();
@@ -35,10 +34,14 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 container.appendChild( renderer.domElement );
 
 // TODO: enable rolling ability with something like TrackballControls
-cameraControls = new THREE.OrbitControls( camera, renderer.domElement );
-cameraControls.target.set( 0, 0, 0 );
+var controls = new THREE.TrackballControls(camera);
+controls.noZoom = true;
+controls.noPan = true;
+//controls.target.set( 0, 0, 0 );
+controls.staticMoving = true;
+controls.dynamicDampingFactor = 0.3;
 
-cameraControls.addEventListener( 'change', render );
+controls.addEventListener( 'change', render );
 
 var	ambientLight = new THREE.AmbientLight( 0x333333 );
 var light = new THREE.DirectionalLight( 0xFFFFFF, 1.0 );
@@ -51,18 +54,29 @@ var teapot = new THREE.Mesh(
 	new THREE.MeshPhongMaterial( { color: materialColor, shading: THREE.SmoothShading, side: THREE.DoubleSide } ));
 scene.add( teapot );
 
-scene.add(camera);
+var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+scene.add(skybox);
 
 function render() {
-	skybox.rotation.x = -camera.rotation.x;
+	skybox.position.setFromMatrixPosition(skyboxDummy.matrixWorld);
+	skybox.rotation.y = camera.rotation.y;
 	skyboxTexture.offset.x = -camera.rotation.y;
 	skyboxTexture.offset.y = camera.rotation.x / 2;
 	renderer.render( scene, camera );
+}
+
+
+function animate() {
+	requestAnimationFrame( animate );
+	controls.update();
 }
 
 window.addEventListener('resize',			function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	controls.handleResize();
 	render();
 });
+
+animate();
