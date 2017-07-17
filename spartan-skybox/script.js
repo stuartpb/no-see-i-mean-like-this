@@ -23,6 +23,7 @@ var frustumFarDistance = 150000;
 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, frustumFarDistance);
 camera.position.set( -600, 550, 1300 );
 camera.target = new THREE.Vector3( 0, 0, 0 );
+camera.rotation.order = 'YXZ';
 var skyboxDummy = new THREE.Object3D();
 skyboxDummy.position.z = -skyboxDistance;
 camera.add(skyboxDummy);
@@ -33,7 +34,6 @@ renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 container.appendChild( renderer.domElement );
 
-// TODO: enable rolling ability with something like TrackballControls
 var controls = new THREE.TrackballControls(camera);
 controls.noZoom = true;
 controls.noPan = true;
@@ -58,10 +58,9 @@ scene.add(skybox);
 
 function render() {
 	skybox.position.setFromMatrixPosition(skyboxDummy.matrixWorld);
-	skybox.rotation.y = camera.rotation.y;
-	var lookVector = camera.getWorldDirection();
-	skyboxTexture.offset.x = lookVector.x;
-	skyboxTexture.offset.y = lookVector.y;
+	skybox.lookAt(new THREE.Vector3(camera.position.x, skybox.position.y, camera.position.z));
+	skyboxTexture.offset.x = -camera.rotation.y / Math.PI;
+	skyboxTexture.offset.y = camera.rotation.x / Math.PI;
 	renderer.render( scene, camera );
 }
 
@@ -70,7 +69,7 @@ function animate() {
 	controls.update();
 }
 
-window.addEventListener('resize',			function onWindowResize() {
+window.addEventListener('resize', function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize( window.innerWidth, window.innerHeight );
