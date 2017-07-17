@@ -38,7 +38,7 @@ var controls = new THREE.TrackballControls(camera);
 controls.noZoom = true;
 controls.noPan = true;
 controls.rotateSpeed = 2.0;
-controls.dynamicDampingFactor = 0.3;
+controls.dynamicDampingFactor = 0.0125;
 
 controls.addEventListener( 'change', render );
 
