@@ -79,3 +79,8 @@ window.addEventListener('resize', function onWindowResize() {
 
 render();
 animate();
+
+var button = document.getElementById('button');
+button.addEventListener( 'click', function ( event ) {
+	window.open( 'https://github.com/stuartpb/no-see-i-mean-like-this/blob/master/skyface/script.js' );
+}, false );
